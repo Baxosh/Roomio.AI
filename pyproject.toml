@@ -1,0 +1,15 @@
+[project]
+name = "vanna-ai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.3.2",
+    "psycopg2>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "vanna[fastapi,openai]>=0.7.9",
+]
+
+[tool.uv.sources]
+vanna = { git = "https://github.com/vanna-ai/vanna.git", rev = "v2" }

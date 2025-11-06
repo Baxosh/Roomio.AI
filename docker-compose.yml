@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  vanna-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vanna-ai-app
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      # DeepSeek API
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+
+      # External Database Configuration
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+      # Optional: Additional configuration
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.7}
+      - AGENT_MAX_ITERATIONS=${AGENT_MAX_ITERATIONS:-50}
+    volumes:
+      # Mount logs directory for persistence
+      - ./logs:/app/logs
+      # Mount chroma_db for vector store persistence
+      - ./chroma_db:/app/chroma_db
+      # Mount structure.txt if it needs to be updated externally
+      - ./structure.txt:/app/structure.txt:ro
+    restart: unless-stopped
+    networks:
+      - vanna-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # If your external database is on the host machine, use host.docker.internal
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+
+networks:
+  vanna-network:
+    driver: bridge

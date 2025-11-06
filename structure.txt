@@ -1,0 +1,2609 @@
+================================================================================
+Database Schema: grms
+Generated: Thu Nov  6 00:12:29 EET 2025
+================================================================================
+
+================================================================================
+Table: public.access_manager_card_device_slots
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    NO         (PK)
+created_at       bigint                  YES       
+updated_at       bigint                  YES       
+card_number      character varying(100)  NO        
+slot             bigint                  NO        
+additional_info  jsonb                   YES       
+created_by_id    uuid                    YES       
+device_id        uuid                    NO        
+updated_by_id    uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_card__created_by_id_65ed4e76_fk_users_use
+    device_id -> main_device(id)
+        Constraint: access_manager_card__device_id_ca173994_fk_main_devi
+    updated_by_id -> users_users(id)
+        Constraint: access_manager_card__updated_by_id_9cbfcbc2_fk_users_use
+
+Indexes:
+    access_manager_card_devi_device_id_card_number_36098518_uniq
+        Type: UNIQUE
+    access_manager_card_device_slots_created_by_id_65ed4e76
+        Type: INDEX
+    access_manager_card_device_slots_device_id_ca173994
+        Type: INDEX
+    access_manager_card_device_slots_device_id_slot_a133b868_uniq
+        Type: UNIQUE
+    access_manager_card_device_slots_pkey
+        Type: UNIQUE
+    access_manager_card_device_slots_updated_by_id_9cbfcbc2
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_card_logs
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               uuid                      NO         (PK)
+updated_at       bigint                    YES       
+created_at       timestamp with time zone  NO        
+number           character varying(200)    NO        
+event_ts         timestamp with time zone  NO        
+access_group     integer                   NO        
+additional_info  jsonb                     YES       
+created_by_id    uuid                      YES       
+device_id        uuid                      NO        
+guest_id         uuid                      YES       
+staff_id         uuid                      YES       
+tenant_id        uuid                      NO        
+updated_by_id    uuid                      YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_card__created_by_id_251921f3_fk_users_use
+    staff_id -> access_manager_staff(id)
+        Constraint: access_manager_card__staff_id_ece0e0ea_fk_access_ma
+    updated_by_id -> users_users(id)
+        Constraint: access_manager_card__updated_by_id_47d70a84_fk_users_use
+    device_id -> main_device(id)
+        Constraint: access_manager_card_logs_device_id_a39b62f0_fk_main_device_id
+    guest_id -> main_guest(id)
+        Constraint: access_manager_card_logs_guest_id_e9c47bb2_fk_main_guest_id
+    tenant_id -> main_tenant(id)
+        Constraint: access_manager_card_logs_tenant_id_da50b4c8_fk_main_tenant_id
+
+Indexes:
+    access_manager_card_logs_created_by_id_251921f3
+        Type: INDEX
+    access_manager_card_logs_device_id_a39b62f0
+        Type: INDEX
+    access_manager_card_logs_guest_id_e9c47bb2
+        Type: INDEX
+    access_manager_card_logs_pkey
+        Type: UNIQUE
+    access_manager_card_logs_staff_id_ece0e0ea
+        Type: INDEX
+    access_manager_card_logs_tenant_id_da50b4c8
+        Type: INDEX
+    access_manager_card_logs_updated_by_id_47d70a84
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_cards
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    NO         (PK)
+created_at       bigint                  YES       
+updated_at       bigint                  YES       
+number           character varying(255)  NO        
+KNX              integer                 YES       
+additional_info  jsonb                   YES       
+created_by_id    uuid                    YES       
+tenant_id        uuid                    NO        
+updated_by_id    uuid                    YES       
+is_active        boolean                 NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_cards_created_by_id_da7f63a7_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: access_manager_cards_tenant_id_5ce98749_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: access_manager_cards_updated_by_id_d1791e90_fk_users_users_id
+
+Indexes:
+    access_manager_cards_created_by_id_da7f63a7
+        Type: INDEX
+    access_manager_cards_number_tenant_id_32bc916d_uniq
+        Type: UNIQUE
+    access_manager_cards_pkey
+        Type: UNIQUE
+    access_manager_cards_tenant_id_5ce98749
+        Type: INDEX
+    access_manager_cards_updated_by_id_d1791e90
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_group_public_spaces
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type    Nullable  Default
+------------------------------------------
+id               uuid    NO         (PK)
+created_at       bigint  YES       
+additional_info  jsonb   YES       
+created_by_id    uuid    YES       
+group_id         uuid    NO        
+public_space_id  uuid    NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_group_created_by_id_923dce45_fk_users_use
+    group_id -> access_manager_groups(id)
+        Constraint: access_manager_group_group_id_f5d6d9a6_fk_access_ma
+    public_space_id -> main_public_spaces(id)
+        Constraint: access_manager_group_public_space_id_f256125a_fk_main_publ
+
+Indexes:
+    access_manager_group_public_spaces_created_by_id_923dce45
+        Type: INDEX
+    access_manager_group_public_spaces_group_id_f5d6d9a6
+        Type: INDEX
+    access_manager_group_public_spaces_pkey
+        Type: UNIQUE
+    access_manager_group_public_spaces_public_space_id_f256125a
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_group_rooms
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type    Nullable  Default
+------------------------------------------
+id               uuid    NO         (PK)
+created_at       bigint  YES       
+additional_info  jsonb   YES       
+created_by_id    uuid    YES       
+group_id         uuid    NO        
+room_id          uuid    NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_group_created_by_id_92df99bc_fk_users_use
+    group_id -> access_manager_groups(id)
+        Constraint: access_manager_group_group_id_00230d17_fk_access_ma
+    room_id -> main_room(id)
+        Constraint: access_manager_group_rooms_room_id_5a98a874_fk_main_room_id
+
+Indexes:
+    access_manager_group_rooms_created_by_id_92df99bc
+        Type: INDEX
+    access_manager_group_rooms_group_id_00230d17
+        Type: INDEX
+    access_manager_group_rooms_pkey
+        Type: UNIQUE
+    access_manager_group_rooms_room_id_5a98a874
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_groups
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               uuid                      NO         (PK)
+created_at       bigint                    YES       
+updated_at       bigint                    YES       
+name             character varying(255)    NO        
+week_days        ARRAY                     NO        
+start_time       time without time zone    NO        
+end_time         time without time zone    NO        
+expiry_date      timestamp with time zone  YES       
+is_active        boolean                   NO        
+additional_info  jsonb                     YES       
+group_type       integer                   NO        
+created_by_id    uuid                      YES       
+tenant_id        uuid                      NO        
+updated_by_id    uuid                      YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_groups_created_by_id_39e97d48_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: access_manager_groups_tenant_id_aa854ac0_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: access_manager_groups_updated_by_id_0e9409fd_fk_users_users_id
+
+Indexes:
+    access_manager_groups_created_by_id_39e97d48
+        Type: INDEX
+    access_manager_groups_pkey
+        Type: UNIQUE
+    access_manager_groups_tenant_id_aa854ac0
+        Type: INDEX
+    access_manager_groups_updated_by_id_0e9409fd
+        Type: INDEX
+    unique_card_group
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.access_manager_guest_cards
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             uuid     NO         (PK)
+created_at     bigint   YES       
+is_active      boolean  NO        
+card_id        uuid     NO        
+created_by_id  uuid     YES       
+guest_id       uuid     NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    card_id -> access_manager_cards(id)
+        Constraint: access_manager_guest_card_id_284f5ced_fk_access_ma
+    guest_id -> main_guest(id)
+        Constraint: access_manager_guest_cards_guest_id_9978b0c2_fk_main_guest_id
+    created_by_id -> users_users(id)
+        Constraint: access_manager_guest_created_by_id_72520a25_fk_users_use
+
+Indexes:
+    access_manager_guest_cards_card_id_284f5ced
+        Type: INDEX
+    access_manager_guest_cards_created_by_id_72520a25
+        Type: INDEX
+    access_manager_guest_cards_guest_id_9978b0c2
+        Type: INDEX
+    access_manager_guest_cards_pkey
+        Type: UNIQUE
+    unique_card_active
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.access_manager_guest_public_spaces
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type    Nullable  Default
+------------------------------------------
+id               uuid    NO         (PK)
+created_at       bigint  YES       
+additional_info  jsonb   YES       
+guest_id         uuid    NO        
+public_space_id  uuid    NO        
+created_by_id    uuid    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_guest_created_by_id_6af8d36d_fk_users_use
+    guest_id -> main_guest(id)
+        Constraint: access_manager_guest_guest_id_c3b99b86_fk_main_gues
+    public_space_id -> main_public_spaces(id)
+        Constraint: access_manager_guest_public_space_id_3bbccb7b_fk_main_publ
+
+Indexes:
+    access_manager_guest_public_spaces_created_by_id_6af8d36d
+        Type: INDEX
+    access_manager_guest_public_spaces_guest_id_c3b99b86
+        Type: INDEX
+    access_manager_guest_public_spaces_pkey
+        Type: UNIQUE
+    access_manager_guest_public_spaces_public_space_id_3bbccb7b
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_need_sync_devices
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type     Nullable  Default
+-------------------------------------------
+id               uuid     NO         (PK)
+created_at       bigint   YES       
+need_sync        boolean  NO        
+additional_info  jsonb    YES       
+card_id          uuid     NO        
+created_by_id    uuid     YES       
+device_id        uuid     NO        
+updated_at       bigint   YES       
+updated_by_id    uuid     YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    card_id -> access_manager_cards(id)
+        Constraint: access_manager_need__card_id_99de13c4_fk_access_ma
+    created_by_id -> users_users(id)
+        Constraint: access_manager_need__created_by_id_d3217408_fk_users_use
+    device_id -> main_device(id)
+        Constraint: access_manager_need__device_id_4f649a95_fk_main_devi
+    updated_by_id -> users_users(id)
+        Constraint: access_manager_need__updated_by_id_9b05a486_fk_users_use
+
+Indexes:
+    access_manager_need_sync_devices_card_id_99de13c4
+        Type: INDEX
+    access_manager_need_sync_devices_created_by_id_d3217408
+        Type: INDEX
+    access_manager_need_sync_devices_device_id_4f649a95
+        Type: INDEX
+    access_manager_need_sync_devices_pkey
+        Type: UNIQUE
+    access_manager_need_sync_devices_updated_by_id_9b05a486
+        Type: INDEX
+
+
+================================================================================
+Table: public.access_manager_staff
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    NO         (PK)
+created_at       bigint                  YES       
+first_name       character varying(255)  NO        
+last_name        character varying(255)  NO        
+is_active        boolean                 NO        
+additional_info  jsonb                   YES       
+created_by_id    uuid                    YES       
+tenant_id        uuid                    NO        
+group_id         uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: access_manager_staff_created_by_id_8ddce84d_fk_users_users_id
+    group_id -> access_manager_groups(id)
+        Constraint: access_manager_staff_group_id_1a7cbaee_fk_access_ma
+    tenant_id -> main_tenant(id)
+        Constraint: access_manager_staff_tenant_id_13c8afee_fk_main_tenant_id
+
+Indexes:
+    access_manager_staff_created_by_id_8ddce84d
+        Type: INDEX
+    access_manager_staff_group_id_1a7cbaee
+        Type: INDEX
+    access_manager_staff_pkey
+        Type: UNIQUE
+    access_manager_staff_tenant_id_13c8afee
+        Type: INDEX
+    unique_staff
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.access_manager_staff_cards
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             uuid     NO         (PK)
+created_at     bigint   YES       
+is_active      boolean  NO        
+card_id        uuid     NO        
+created_by_id  uuid     YES       
+staff_id       uuid     NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    card_id -> access_manager_cards(id)
+        Constraint: access_manager_staff_card_id_96edbcf3_fk_access_ma
+    created_by_id -> users_users(id)
+        Constraint: access_manager_staff_created_by_id_5d83f8c7_fk_users_use
+    staff_id -> access_manager_staff(id)
+        Constraint: access_manager_staff_staff_id_77853db9_fk_access_ma
+
+Indexes:
+    access_manager_staff_cards_card_id_96edbcf3
+        Type: INDEX
+    access_manager_staff_cards_created_by_id_5d83f8c7
+        Type: INDEX
+    access_manager_staff_cards_pkey
+        Type: UNIQUE
+    access_manager_staff_cards_staff_id_77853db9
+        Type: INDEX
+    unique_active_staff_card
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.account_emailaddress
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column    Type                    Nullable  Default
+---------------------------------------------------
+id        integer                 NO         (PK)
+email     character varying(254)  NO        
+verified  boolean                 NO        
+primary   boolean                 NO        
+user_id   uuid                    NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    user_id -> users_users(id)
+        Constraint: account_emailaddress_user_id_2c513194_fk_users_users_id
+
+Indexes:
+    account_emailaddress_email_03be32b2
+        Type: INDEX
+    account_emailaddress_email_03be32b2_like
+        Type: INDEX
+    account_emailaddress_pkey
+        Type: UNIQUE
+    account_emailaddress_user_id_2c513194
+        Type: INDEX
+    account_emailaddress_user_id_email_987c8728_uniq
+        Type: UNIQUE
+    unique_primary_email
+        Type: UNIQUE
+    unique_verified_email
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.account_emailconfirmation
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column            Type                      Nullable  Default
+-------------------------------------------------------------
+id                integer                   NO         (PK)
+created           timestamp with time zone  NO        
+sent              timestamp with time zone  YES       
+key               character varying(64)     NO        
+email_address_id  integer                   NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    email_address_id -> account_emailaddress(id)
+        Constraint: account_emailconfirm_email_address_id_5b7f8c58_fk_account_e
+
+Indexes:
+    account_emailconfirmation_email_address_id_5b7f8c58
+        Type: INDEX
+    account_emailconfirmation_key_f43612bd_like
+        Type: INDEX
+    account_emailconfirmation_key_key
+        Type: UNIQUE
+    account_emailconfirmation_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.auth_group
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column  Type                    Nullable  Default
+-------------------------------------------------
+id    integer                 NO         (PK)
+name  character varying(150)  NO        
+
+Primary Key:
+    id
+
+Indexes:
+    auth_group_name_a6ea08ec_like
+        Type: INDEX
+    auth_group_name_key
+        Type: UNIQUE
+    auth_group_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.auth_group_permissions
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             integer  NO         (PK)
+group_id       integer  NO        
+permission_id  integer  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    permission_id -> auth_permission(id)
+        Constraint: auth_group_permissio_permission_id_84c5c92e_fk_auth_perm
+    group_id -> auth_group(id)
+        Constraint: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id
+
+Indexes:
+    auth_group_permissions_group_id_b120cbf9
+        Type: INDEX
+    auth_group_permissions_group_id_permission_id_0cd325b0_uniq
+        Type: UNIQUE
+    auth_group_permissions_permission_id_84c5c92e
+        Type: INDEX
+    auth_group_permissions_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.auth_permission
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               integer                 NO         (PK)
+name             character varying(255)  NO        
+content_type_id  integer                 NO        
+codename         character varying(100)  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    content_type_id -> django_content_type(id)
+        Constraint: auth_permission_content_type_id_2f476e4b_fk_django_co
+
+Indexes:
+    auth_permission_content_type_id_2f476e4b
+        Type: INDEX
+    auth_permission_content_type_id_codename_01ab375a_uniq
+        Type: UNIQUE
+    auth_permission_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.auth_permission_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               integer                 YES       
+name             character varying(255)  YES       
+content_type_id  integer                 YES       
+codename         character varying(100)  YES       
+
+
+================================================================================
+Table: public.django_admin_log
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               integer                   NO         (PK)
+action_time      timestamp with time zone  NO        
+object_id        text                      YES       
+object_repr      character varying(200)    NO        
+action_flag      smallint                  NO        
+change_message   text                      NO        
+content_type_id  integer                   YES       
+user_id          uuid                      NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    content_type_id -> django_content_type(id)
+        Constraint: django_admin_log_content_type_id_c4bce8eb_fk_django_co
+    user_id -> users_users(id)
+        Constraint: django_admin_log_user_id_c564eba6_fk_users_users_id
+
+Indexes:
+    django_admin_log_content_type_id_c4bce8eb
+        Type: INDEX
+    django_admin_log_pkey
+        Type: UNIQUE
+    django_admin_log_user_id_c564eba6
+        Type: INDEX
+
+
+================================================================================
+Table: public.django_celery_beat_clockedschedule
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column        Type                      Nullable  Default
+---------------------------------------------------------
+id            integer                   NO         (PK)
+clocked_time  timestamp with time zone  NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_celery_beat_clockedschedule_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_beat_crontabschedule
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                    Nullable  Default
+--------------------------------------------------------
+id             integer                 NO         (PK)
+minute         character varying(240)  NO        
+hour           character varying(96)   NO        
+day_of_week    character varying(64)   NO        
+day_of_month   character varying(124)  NO        
+month_of_year  character varying(64)   NO        
+timezone       character varying(63)   NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_celery_beat_crontabschedule_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_beat_intervalschedule
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column  Type                   Nullable  Default
+------------------------------------------------
+id      integer                NO         (PK)
+every   integer                NO        
+period  character varying(24)  NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_celery_beat_intervalschedule_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_beat_periodictask
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               integer                   NO         (PK)
+name             character varying(200)    NO        
+task             character varying(200)    NO        
+args             text                      NO        
+kwargs           text                      NO        
+queue            character varying(200)    YES       
+exchange         character varying(200)    YES       
+routing_key      character varying(200)    YES       
+expires          timestamp with time zone  YES       
+enabled          boolean                   NO        
+last_run_at      timestamp with time zone  YES       
+total_run_count  integer                   NO        
+date_changed     timestamp with time zone  NO        
+description      text                      NO        
+crontab_id       integer                   YES       
+interval_id      integer                   YES       
+solar_id         integer                   YES       
+one_off          boolean                   NO        
+start_time       timestamp with time zone  YES       
+priority         integer                   YES       
+headers          text                      NO        
+clocked_id       integer                   YES       
+expire_seconds   integer                   YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    clocked_id -> django_celery_beat_clockedschedule(id)
+        Constraint: django_celery_beat_p_clocked_id_47a69f82_fk_django_ce
+    crontab_id -> django_celery_beat_crontabschedule(id)
+        Constraint: django_celery_beat_p_crontab_id_d3cba168_fk_django_ce
+    interval_id -> django_celery_beat_intervalschedule(id)
+        Constraint: django_celery_beat_p_interval_id_a8ca27da_fk_django_ce
+    solar_id -> django_celery_beat_solarschedule(id)
+        Constraint: django_celery_beat_p_solar_id_a87ce72c_fk_django_ce
+
+Indexes:
+    django_celery_beat_periodictask_clocked_id_47a69f82
+        Type: INDEX
+    django_celery_beat_periodictask_crontab_id_d3cba168
+        Type: INDEX
+    django_celery_beat_periodictask_interval_id_a8ca27da
+        Type: INDEX
+    django_celery_beat_periodictask_name_265a36b7_like
+        Type: INDEX
+    django_celery_beat_periodictask_name_key
+        Type: UNIQUE
+    django_celery_beat_periodictask_pkey
+        Type: UNIQUE
+    django_celery_beat_periodictask_solar_id_a87ce72c
+        Type: INDEX
+
+
+================================================================================
+Table: public.django_celery_beat_periodictasks
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column       Type                      Nullable  Default
+--------------------------------------------------------
+ident        smallint                  NO         (PK)
+last_update  timestamp with time zone  NO        
+
+Primary Key:
+    ident
+
+Indexes:
+    django_celery_beat_periodictasks_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_beat_solarschedule
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                   Nullable  Default
+---------------------------------------------------
+id         integer                NO         (PK)
+event      character varying(24)  NO        
+latitude   numeric                NO        
+longitude  numeric                NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_celery_beat_solar_event_latitude_longitude_ba64999a_uniq
+        Type: UNIQUE
+    django_celery_beat_solarschedule_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_results_chordcounter
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                    Nullable  Default
+----------------------------------------------------
+id         integer                 NO         (PK)
+group_id   character varying(255)  NO        
+sub_tasks  text                    NO        
+count      integer                 NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_celery_results_chordcounter_group_id_1f70858c_like
+        Type: INDEX
+    django_celery_results_chordcounter_group_id_key
+        Type: UNIQUE
+    django_celery_results_chordcounter_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_results_groupresult
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column            Type                      Nullable  Default
+-------------------------------------------------------------
+id                integer                   NO         (PK)
+group_id          character varying(255)    NO        
+date_created      timestamp with time zone  NO        
+date_done         timestamp with time zone  NO        
+content_type      character varying(128)    NO        
+content_encoding  character varying(64)     NO        
+result            text                      YES       
+
+Primary Key:
+    id
+
+Indexes:
+    django_cele_date_cr_bd6c1d_idx
+        Type: INDEX
+    django_cele_date_do_caae0e_idx
+        Type: INDEX
+    django_celery_results_groupresult_group_id_a085f1a9_like
+        Type: INDEX
+    django_celery_results_groupresult_group_id_key
+        Type: UNIQUE
+    django_celery_results_groupresult_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_celery_results_taskresult
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column              Type                      Nullable  Default
+---------------------------------------------------------------
+id                  integer                   NO         (PK)
+task_id             character varying(255)    NO        
+status              character varying(50)     NO        
+content_type        character varying(128)    NO        
+content_encoding    character varying(64)     NO        
+result              text                      YES       
+date_done           timestamp with time zone  NO        
+traceback           text                      YES       
+meta                text                      YES       
+task_args           text                      YES       
+task_kwargs         text                      YES       
+task_name           character varying(255)    YES       
+worker              character varying(100)    YES       
+date_created        timestamp with time zone  NO        
+periodic_task_name  character varying(255)    YES       
+
+Primary Key:
+    id
+
+Indexes:
+    django_cele_date_cr_f04a50_idx
+        Type: INDEX
+    django_cele_date_do_f59aad_idx
+        Type: INDEX
+    django_cele_status_9b6201_idx
+        Type: INDEX
+    django_cele_task_na_08aec9_idx
+        Type: INDEX
+    django_cele_worker_d54dd8_idx
+        Type: INDEX
+    django_celery_results_taskresult_pkey
+        Type: UNIQUE
+    django_celery_results_taskresult_task_id_de0d95bf_like
+        Type: INDEX
+    django_celery_results_taskresult_task_id_key
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_content_type
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                    Nullable  Default
+----------------------------------------------------
+id         integer                 NO         (PK)
+app_label  character varying(100)  NO        
+model      character varying(100)  NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_content_type_app_label_model_76bd3d3b_uniq
+        Type: UNIQUE
+    django_content_type_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_content_type_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                    Nullable  Default
+----------------------------------------------------
+id         integer                 YES       
+app_label  character varying(100)  YES       
+model      character varying(100)  YES       
+
+
+================================================================================
+Table: public.django_migrations
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column   Type                      Nullable  Default
+----------------------------------------------------
+id       integer                   NO         (PK)
+app      character varying(255)    NO        
+name     character varying(255)    NO        
+applied  timestamp with time zone  NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_migrations_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.django_session
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column        Type                      Nullable  Default
+---------------------------------------------------------
+session_key   character varying(40)     NO         (PK)
+session_data  text                      NO        
+expire_date   timestamp with time zone  NO        
+
+Primary Key:
+    session_key
+
+Indexes:
+    django_session_expire_date_a5c62663
+        Type: INDEX
+    django_session_pkey
+        Type: UNIQUE
+    django_session_session_key_c0390e0f_like
+        Type: INDEX
+
+
+================================================================================
+Table: public.django_site
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column  Type                    Nullable  Default
+-------------------------------------------------
+id      integer                 NO         (PK)
+domain  character varying(100)  NO        
+name    character varying(50)   NO        
+
+Primary Key:
+    id
+
+Indexes:
+    django_site_domain_a2e37b91_like
+        Type: INDEX
+    django_site_domain_a2e37b91_uniq
+        Type: UNIQUE
+    django_site_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_admin_settings
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                      Nullable  Default
+----------------------------------------------------------
+id             uuid                      NO         (PK)
+json_value     jsonb                     YES       
+key            character varying(255)    NO        
+tenant_id      uuid                      NO        
+created_by_id  uuid                      YES       
+updated_at     timestamp with time zone  YES       
+updated_by_id  uuid                      YES       
+created_at     timestamp with time zone  YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_admin_settings_created_by_id_883517b3_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_admin_settings_tenant_id_7c81903a_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: main_admin_settings_updated_by_id_59a085b2_fk_users_users_id
+
+Indexes:
+    main_admin_settings_created_by_id_883517b3
+        Type: INDEX
+    main_admin_settings_pkey
+        Type: UNIQUE
+    main_admin_settings_tenant_id_7c81903a
+        Type: INDEX
+    main_admin_settings_updated_by_id_59a085b2
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_customer
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    NO         (PK)
+created_at       bigint                  YES       
+title            character varying(255)  NO        
+additional_info  jsonb                   YES       
+address          character varying       YES       
+address2         character varying       YES       
+city             character varying(255)  YES       
+country          character varying(255)  YES       
+email            character varying(255)  YES       
+phone            character varying(255)  YES       
+state            character varying(255)  YES       
+zip              character varying(255)  YES       
+external_id      uuid                    YES       
+tenant_id        uuid                    NO        
+created_by_id    uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_customer_created_by_id_32ac32d4_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_customer_tenant_id_8b5f288c_fk_main_tenant_id
+
+Indexes:
+    main_customer_created_by_id_32ac32d4
+        Type: INDEX
+    main_customer_pkey
+        Type: UNIQUE
+    main_customer_tenant_id_8b5f288c
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_dashboard
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column              Type                    Nullable  Default
+-------------------------------------------------------------
+id                  uuid                    NO         (PK)
+created_at          bigint                  YES       
+title               character varying(255)  NO        
+configuration       jsonb                   YES       
+assigned_customers  character varying(255)  YES       
+mobile_hide         boolean                 NO        
+mobile_order        integer                 YES       
+image               character varying(100)  YES       
+external_id         uuid                    YES       
+tenant_id           uuid                    NO        
+created_by_id       uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_dashboard_created_by_id_ae73a7d7_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_dashboard_tenant_id_41fb2cd2_fk_main_tenant_id
+
+Indexes:
+    main_dashboard_created_by_id_ae73a7d7
+        Type: INDEX
+    main_dashboard_pkey
+        Type: UNIQUE
+    main_dashboard_tenant_id_41fb2cd2
+        Type: INDEX
+    unique_dashboard_title_tenant
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_device
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column             Type                    Nullable  Default
+------------------------------------------------------------
+id                 uuid                    NO         (PK)
+created_at         bigint                  YES       
+name               character varying(255)  NO        
+type               character varying(255)  NO        
+status             boolean                 NO        
+label              character varying(255)  YES       
+additional_info    jsonb                   YES       
+device_data        jsonb                   YES       
+external_id        character varying(255)  YES       
+customer_id        uuid                    YES       
+tenant_id          uuid                    NO        
+device_profile_id  uuid                    NO        
+room_id            uuid                    YES       
+is_active          boolean                 NO        
+card_id            uuid                    YES       
+created_by_id      uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    card_id -> access_manager_cards(id)
+        Constraint: main_device_card_id_1b1fa407_fk_access_manager_cards_id
+    created_by_id -> users_users(id)
+        Constraint: main_device_created_by_id_cabf8fbb_fk_users_users_id
+    customer_id -> main_customer(id)
+        Constraint: main_device_customer_id_f46b1c00_fk_main_customer_id
+    device_profile_id -> main_device_profile(id)
+        Constraint: main_device_device_profile_id_c014bb62_fk_main_devi
+    room_id -> main_room(id)
+        Constraint: main_device_room_id_03a557be_fk_main_room_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_device_tenant_id_d3066abc_fk_main_tenant_id
+
+Indexes:
+    main_device_card_id_1b1fa407
+        Type: INDEX
+    main_device_created_by_id_cabf8fbb
+        Type: INDEX
+    main_device_customer_id_f46b1c00
+        Type: INDEX
+    main_device_device_profile_id_c014bb62
+        Type: INDEX
+    main_device_pkey
+        Type: UNIQUE
+    main_device_room_id_03a557be
+        Type: INDEX
+    main_device_tenant_id_d3066abc
+        Type: INDEX
+    unique_device_name_tenant_is_active
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_device_credentials
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column             Type                    Nullable  Default
+------------------------------------------------------------
+id                 uuid                    NO         (PK)
+created_at         bigint                  YES       
+credentials_id     character varying       YES       
+credentials_type   character varying(255)  YES       
+credentials_value  character varying       YES       
+device_id          uuid                    YES       
+created_by_id      uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_device_credenti_created_by_id_95a153ac_fk_users_use
+    device_id -> main_device(id)
+        Constraint: main_device_credentials_device_id_118173bf_fk_main_device_id
+
+Indexes:
+    main_device_credentials_created_by_id_95a153ac
+        Type: INDEX
+    main_device_credentials_credentials_id_c7c22832_like
+        Type: INDEX
+    main_device_credentials_credentials_id_key
+        Type: UNIQUE
+    main_device_credentials_device_id_key
+        Type: UNIQUE
+    main_device_credentials_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_device_profile
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column                Type                        Nullable  Default
+-------------------------------------------------------------------
+id                    uuid                        NO         (PK)
+created_at            bigint                      YES       
+name                  character varying(255)      NO        
+type                  character varying(255)      NO        
+image                 character varying(1000000)  YES       
+transport_type        character varying(255)      YES       
+provision_type        character varying(255)      YES       
+profile_data          jsonb                       YES       
+description           character varying           YES       
+is_default            boolean                     YES       
+default_queue_name    character varying(255)      YES       
+provision_device_key  character varying           YES       
+external_id           uuid                        YES       
+tenant_id             uuid                        NO        
+state                 boolean                     NO        
+active                boolean                     NO        
+created_by_id         uuid                        YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_device_profile_created_by_id_10ff9dc5_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_device_profile_tenant_id_ec44e8fb_fk_main_tenant_id
+
+Indexes:
+    main_device_profile_created_by_id_10ff9dc5
+        Type: INDEX
+    main_device_profile_pkey
+        Type: UNIQUE
+    main_device_profile_provision_device_key_818e20eb_like
+        Type: INDEX
+    main_device_profile_provision_device_key_key
+        Type: UNIQUE
+    main_device_profile_tenant_id_ec44e8fb
+        Type: INDEX
+    unique_active_device_profile
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_device_public_spaces
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type    Nullable  Default
+------------------------------------------
+id               uuid    NO         (PK)
+created_at       bigint  YES       
+device_id        uuid    NO        
+public_space_id  uuid    NO        
+created_by_id    uuid    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_device_public_s_created_by_id_22de710d_fk_users_use
+    public_space_id -> main_public_spaces(id)
+        Constraint: main_device_public_s_public_space_id_013d743a_fk_main_publ
+    device_id -> main_device(id)
+        Constraint: main_device_public_spaces_device_id_4f3256ee_fk_main_device_id
+
+Indexes:
+    main_device_public_space_device_id_public_space_i_556f73a9_uniq
+        Type: UNIQUE
+    main_device_public_spaces_created_by_id_22de710d
+        Type: INDEX
+    main_device_public_spaces_device_id_4f3256ee
+        Type: INDEX
+    main_device_public_spaces_pkey
+        Type: UNIQUE
+    main_device_public_spaces_public_space_id_013d743a
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_email_configuration
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                      Nullable  Default
+----------------------------------------------------------
+id             uuid                      NO         (PK)
+email          character varying(254)    NO        
+host           character varying(255)    NO        
+port           character varying(255)    NO        
+username       character varying(255)    NO        
+password       character varying(255)    NO        
+use_tls        boolean                   NO        
+tenant_id      uuid                      NO        
+updated_by_id  uuid                      YES       
+frontend_host  character varying(255)    YES       
+frontend_port  character varying(100)    YES       
+created_by_id  uuid                      YES       
+updated_at     timestamp with time zone  YES       
+created_at     timestamp with time zone  YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_email_configura_created_by_id_1f1de340_fk_users_use
+    updated_by_id -> users_users(id)
+        Constraint: main_email_configura_updated_by_id_cdb38dd3_fk_users_use
+    tenant_id -> main_tenant(id)
+        Constraint: main_email_configuration_tenant_id_befda8f8_fk_main_tenant_id
+
+Indexes:
+    main_email_configuration_created_by_id_1f1de340
+        Type: INDEX
+    main_email_configuration_pkey
+        Type: UNIQUE
+    main_email_configuration_tenant_id_key
+        Type: UNIQUE
+    main_email_configuration_updated_by_id_cdb38dd3
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_guest
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column              Type                    Nullable  Default
+-------------------------------------------------------------
+id                  uuid                    NO         (PK)
+created_at          bigint                  YES       
+name                character varying(255)  NO        
+lastname            character varying(255)  YES       
+gender              character varying(255)  YES       
+nationality         character varying(255)  YES       
+birthday            bigint                  YES       
+is_active           boolean                 NO        
+check_in            bigint                  YES       
+check_out           bigint                  YES       
+auto_check_out      boolean                 NO        
+reservation_number  character varying(255)  YES       
+room_id             uuid                    YES       
+tenant_id           uuid                    NO        
+additional_info     jsonb                   YES       
+language            character varying(255)  YES       
+title               character varying(255)  YES       
+created_by_id       uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_guest_created_by_id_0bba69e3_fk_users_users_id
+    room_id -> main_room(id)
+        Constraint: main_guest_room_id_bae50b20_fk_main_room_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_guest_tenant_id_e5e1216c_fk_main_tenant_id
+
+Indexes:
+    main_guest_created_by_id_0bba69e3
+        Type: INDEX
+    main_guest_pkey
+        Type: UNIQUE
+    main_guest_room_id_bae50b20
+        Type: INDEX
+    main_guest_tenant_id_e5e1216c
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_public_spaces
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column                Type                    Nullable  Default
+---------------------------------------------------------------
+id                    uuid                    NO         (PK)
+created_at            bigint                  YES       
+name                  character varying(255)  NO        
+additional_info       jsonb                   YES       
+created_by_id         uuid                    YES       
+dashboard_id          uuid                    YES       
+tenant_id             uuid                    NO        
+block                 character varying(255)  NO        
+floor                 character varying(255)  NO        
+accessible_for_guest  boolean                 NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_public_spaces_created_by_id_84c913a3_fk_users_users_id
+    dashboard_id -> main_dashboard(id)
+        Constraint: main_public_spaces_dashboard_id_e654e157_fk_main_dashboard_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_public_spaces_tenant_id_d9e5eebc_fk_main_tenant_id
+
+Indexes:
+    main_public_spaces_created_by_id_84c913a3
+        Type: INDEX
+    main_public_spaces_dashboard_id_e654e157
+        Type: INDEX
+    main_public_spaces_name_tenant_id_5f9e63b2_uniq
+        Type: UNIQUE
+    main_public_spaces_pkey
+        Type: UNIQUE
+    main_public_spaces_tenant_id_d9e5eebc
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_room
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column               Type                    Nullable  Default
+--------------------------------------------------------------
+id                   uuid                    NO         (PK)
+created_at           bigint                  YES       
+updated_at           bigint                  YES       
+number               character varying(100)  NO        
+floor                character varying(255)  NO        
+block                character varying(255)  NO        
+active               boolean                 NO        
+state                ARRAY                   NO        
+public_area_id       integer                 YES       
+pan_id               character varying(255)  YES       
+building             character varying(255)  YES       
+suite_id             uuid                    YES       
+tenant_id            uuid                    NO        
+updated_by_id        uuid                    YES       
+type_id              uuid                    YES       
+status               character varying(255)  NO        
+created_by_id        uuid                    YES       
+additional_info      jsonb                   YES       
+label                character varying(255)  YES       
+door_lock_device_id  uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_room_created_by_id_68d4dabf_fk_users_users_id
+    door_lock_device_id -> main_device(id)
+        Constraint: main_room_door_lock_device_id_000abf16_fk_main_device_id
+    suite_id -> main_room(id)
+        Constraint: main_room_suite_id_e8079be7_fk_main_room_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_room_tenant_id_493b6a4b_fk_main_tenant_id
+    type_id -> main_room_type(id)
+        Constraint: main_room_type_id_169c6da8_fk_main_room_type_id
+    updated_by_id -> users_users(id)
+        Constraint: main_room_updated_by_id_1bc80525_fk_users_users_id
+
+Indexes:
+    main_room_created_by_id_68d4dabf
+        Type: INDEX
+    main_room_door_lock_device_id_key
+        Type: UNIQUE
+    main_room_pkey
+        Type: UNIQUE
+    main_room_suite_id_e8079be7
+        Type: INDEX
+    main_room_tenant_id_493b6a4b
+        Type: INDEX
+    main_room_type_id_169c6da8
+        Type: INDEX
+    main_room_updated_by_id_1bc80525
+        Type: INDEX
+    unique_active_room
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_room_history
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column               Type                    Nullable  Default
+--------------------------------------------------------------
+id                   uuid                    NO         (PK)
+created_at           bigint                  YES       
+updated_at           bigint                  YES       
+number               character varying(100)  NO        
+floor                character varying(255)  NO        
+block                character varying(255)  NO        
+active               boolean                 NO        
+state                ARRAY                   NO        
+public_area_id       integer                 YES       
+pan_id               character varying(255)  YES       
+building             character varying(255)  YES       
+status               character varying(255)  NO        
+suite_id             uuid                    YES       
+tenant_id            uuid                    NO        
+room_type_id         uuid                    YES       
+updated_by_id        uuid                    YES       
+additional_info      jsonb                   YES       
+room_id              uuid                    NO        
+created_by_id        uuid                    YES       
+door_lock_device_id  uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_room_history_created_by_id_dcd44c76_fk_users_users_id
+    door_lock_device_id -> main_device(id)
+        Constraint: main_room_history_door_lock_device_id_02cbdcf9_fk_main_devi
+    room_id -> main_room(id)
+        Constraint: main_room_history_room_id_1a4e7eac_fk_main_room_id
+    room_type_id -> main_room_type(id)
+        Constraint: main_room_history_room_type_id_9d24bd6d_fk_main_room_type_id
+    suite_id -> main_room_history(id)
+        Constraint: main_room_history_suite_id_6501568b_fk_main_room_history_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_room_history_tenant_id_08988df8_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: main_room_history_updated_by_id_7582bb8a_fk_users_users_id
+
+Indexes:
+    main_room_history_created_by_id_dcd44c76
+        Type: INDEX
+    main_room_history_door_lock_device_id_key
+        Type: UNIQUE
+    main_room_history_pkey
+        Type: UNIQUE
+    main_room_history_room_id_1a4e7eac
+        Type: INDEX
+    main_room_history_suite_id_6501568b
+        Type: INDEX
+    main_room_history_tenant_id_08988df8
+        Type: INDEX
+    main_room_history_type_id_30134b32
+        Type: INDEX
+    main_room_history_updated_by_id_7582bb8a
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_room_type
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column                        Type                    Nullable  Default
+-----------------------------------------------------------------------
+id                            uuid                    NO         (PK)
+created_at                    bigint                  YES       
+title                         character varying(255)  NO        
+active                        boolean                 NO        
+check_in_out_address          integer                 YES       
+check_in_value                integer                 YES       
+check_out_value               integer                 YES       
+reserver_value                integer                 YES       
+app_server_sip_server_enable  boolean                 YES       
+app_server_sip_account_num    integer                 YES       
+vip_status_address            integer                 YES       
+vip_status_on_value           integer                 YES       
+vip_status_off_value          integer                 YES       
+tenant_id                     uuid                    NO        
+dashboard_id                  uuid                    YES       
+created_by_id                 uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_room_type_created_by_id_6bbf2c82_fk_users_users_id
+    dashboard_id -> main_dashboard(id)
+        Constraint: main_room_type_dashboard_id_8ea313af_fk_main_dashboard_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_room_type_tenant_id_dc628fde_fk_main_tenant_id
+
+Indexes:
+    main_room_type_created_by_id_6bbf2c82
+        Type: INDEX
+    main_room_type_dashboard_id_8ea313af
+        Type: INDEX
+    main_room_type_pkey
+        Type: UNIQUE
+    main_room_type_tenant_id_dc628fde
+        Type: INDEX
+    main_room_type_title_tenant_id_c5ebb457_uniq
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_room_type_public_spaces
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type    Nullable  Default
+------------------------------------------
+id               uuid    NO         (PK)
+created_at       bigint  YES       
+public_space_id  uuid    NO        
+room_type_id     uuid    NO        
+created_by_id    uuid    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_room_type_publi_created_by_id_0f570585_fk_users_use
+    public_space_id -> main_public_spaces(id)
+        Constraint: main_room_type_publi_public_space_id_e8f55205_fk_main_publ
+    room_type_id -> main_room_type(id)
+        Constraint: main_room_type_publi_room_type_id_741093d1_fk_main_room
+
+Indexes:
+    main_room_type_public_sp_room_type_id_public_spac_51b0bf8d_uniq
+        Type: UNIQUE
+    main_room_type_public_spaces_created_by_id_0f570585
+        Type: INDEX
+    main_room_type_public_spaces_pkey
+        Type: UNIQUE
+    main_room_type_public_spaces_public_space_id_e8f55205
+        Type: INDEX
+    main_room_type_public_spaces_room_type_id_741093d1
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_tenant
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column             Type                      Nullable  Default
+--------------------------------------------------------------
+id                 uuid                      NO         (PK)
+additional_info    jsonb                     YES       
+address            character varying         YES       
+address2           character varying         YES       
+city               character varying(255)    YES       
+country            character varying(255)    YES       
+email              character varying(255)    YES       
+phone              character varying(255)    YES       
+region             character varying(255)    YES       
+state              character varying(255)    YES       
+title              character varying(255)    YES       
+zip                character varying(255)    YES       
+tenant_profile_id  uuid                      NO        
+created_by_id      uuid                      YES       
+updated_at         timestamp with time zone  YES       
+updated_by_id      uuid                      YES       
+created_at         timestamp with time zone  YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_tenant_created_by_id_064208db_fk_users_users_id
+    tenant_profile_id -> main_tenant_profile(id)
+        Constraint: main_tenant_tenant_profile_id_788aa968_fk_main_tena
+    updated_by_id -> users_users(id)
+        Constraint: main_tenant_updated_by_id_51ac04a7_fk_users_users_id
+
+Indexes:
+    main_tenant_created_by_id_064208db
+        Type: INDEX
+    main_tenant_pkey
+        Type: UNIQUE
+    main_tenant_tenant_profile_id_788aa968
+        Type: INDEX
+    main_tenant_updated_by_id_51ac04a7
+        Type: INDEX
+
+
+================================================================================
+Table: public.main_tenant_profile
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column                   Type                    Nullable  Default
+------------------------------------------------------------------
+id                       uuid                    NO         (PK)
+created_at               bigint                  YES       
+name                     character varying(255)  NO        
+profile_data             jsonb                   YES       
+description              text                    YES       
+is_default               boolean                 NO        
+isolated_tb_core         boolean                 NO        
+isolated_tb_rule_engine  boolean                 NO        
+created_by_id            uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_tenant_profile_created_by_id_13928d8f_fk_users_users_id
+
+Indexes:
+    main_tenant_profile_created_by_id_13928d8f
+        Type: INDEX
+    main_tenant_profile_name_9c3d8d5f_like
+        Type: INDEX
+    main_tenant_profile_name_key
+        Type: UNIQUE
+    main_tenant_profile_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.main_widget_type
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                        Nullable  Default
+------------------------------------------------------------
+id             uuid                        NO         (PK)
+created_at     bigint                      YES       
+name           character varying(255)      NO        
+deprecated     boolean                     NO        
+fqn            character varying(512)      YES       
+descriptor     jsonb                       YES       
+image          character varying(1000000)  YES       
+description    text                        YES       
+tags           text                        YES       
+external_id    uuid                        YES       
+tenant_id      uuid                        NO        
+created_by_id  uuid                        YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: main_widget_type_created_by_id_4b2c2607_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: main_widget_type_tenant_id_8045ed1b_fk_main_tenant_id
+
+Indexes:
+    main_widget_type_created_by_id_4b2c2607
+        Type: INDEX
+    main_widget_type_name_tenant_id_15a0a0ff_uniq
+        Type: UNIQUE
+    main_widget_type_pkey
+        Type: UNIQUE
+    main_widget_type_tenant_id_8045ed1b
+        Type: INDEX
+
+
+================================================================================
+Table: public.redis://redis:6379/1
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                      Nullable  Default
+------------------------------------------------------
+cache_key  character varying(255)    NO         (PK)
+value      text                      NO        
+expires    timestamp with time zone  NO        
+
+Primary Key:
+    cache_key
+
+Indexes:
+    redis://redis:6379/1_expires
+        Type: INDEX
+    redis://redis:6379/1_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.services_integration
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               uuid                      NO         (PK)
+created_at       timestamp with time zone  YES       
+updated_at       timestamp with time zone  YES       
+name             character varying(100)    NO        
+type             character varying(100)    NO        
+description      text                      NO        
+additional_info  jsonb                     YES       
+enable           boolean                   NO        
+is_active        boolean                   NO        
+created_by_id    uuid                      YES       
+tenant_id        uuid                      NO        
+updated_by_id    uuid                      YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: services_integration_created_by_id_cd042390_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: services_integration_tenant_id_4d8cb986_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: services_integration_updated_by_id_6fb83779_fk_users_users_id
+
+Indexes:
+    services_integration_created_by_id_cd042390
+        Type: INDEX
+    services_integration_pkey
+        Type: UNIQUE
+    services_integration_tenant_id_4d8cb986
+        Type: INDEX
+    services_integration_updated_by_id_6fb83779
+        Type: INDEX
+    unique_integration_name_type_tenant_is_active
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.shuttle_attribute_kv
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column          Type                         Nullable  Default
+--------------------------------------------------------------
+id              uuid                         NO         (PK)
+created_at      bigint                       YES       
+entity_type     character varying(255)       NO        
+attribute_type  character varying(255)       NO        
+attribute_key   character varying(255)       NO        
+bool_v          boolean                      YES       
+str_v           character varying(10000000)  YES       
+long_v          bigint                       YES       
+dbl_v           double precision             YES       
+json_v          jsonb                        YES       
+last_update_ts  bigint                       NO        
+entity_id       uuid                         NO        
+created_by_id   uuid                         YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: shuttle_attribute_kv_created_by_id_76cddb96_fk_users_users_id
+    entity_id -> main_device(id)
+        Constraint: shuttle_attribute_kv_entity_id_c2487e22_fk_main_device_id
+
+Indexes:
+    shuttle_attribute_kv_created_by_id_76cddb96
+        Type: INDEX
+    shuttle_attribute_kv_entity_id_c2487e22
+        Type: INDEX
+    shuttle_attribute_kv_pkey
+        Type: UNIQUE
+    unique_attrkv_type_scope_entity_key
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.shuttle_controller
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                    Nullable  Default
+--------------------------------------------------------
+id             uuid                    NO         (PK)
+created_at     bigint                  YES       
+updated_at     bigint                  YES       
+name           character varying(255)  YES       
+mac_address    character varying(255)  NO        
+created_by_id  uuid                    YES       
+tenant_id      uuid                    NO        
+updated_by_id  uuid                    YES       
+file_id        uuid                    NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: shuttle_controller_created_by_id_8c9156df_fk_users_users_id
+    file_id -> shuttle_controller_file(id)
+        Constraint: shuttle_controller_file_id_26ec58b3_fk_shuttle_c
+    tenant_id -> main_tenant(id)
+        Constraint: shuttle_controller_tenant_id_65fd1a48_fk_main_tenant_id
+    updated_by_id -> users_users(id)
+        Constraint: shuttle_controller_updated_by_id_f10bf708_fk_users_users_id
+
+Indexes:
+    shuttle_controller_created_by_id_8c9156df
+        Type: INDEX
+    shuttle_controller_file_id_26ec58b3
+        Type: INDEX
+    shuttle_controller_pkey
+        Type: UNIQUE
+    shuttle_controller_tenant_id_65fd1a48
+        Type: INDEX
+    shuttle_controller_updated_by_id_f10bf708
+        Type: INDEX
+
+
+================================================================================
+Table: public.shuttle_controller_file
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                    Nullable  Default
+--------------------------------------------------------
+id             uuid                    NO         (PK)
+created_at     bigint                  YES       
+updated_at     bigint                  YES       
+content        character varying(100)  NO        
+file_type      character varying(255)  NO        
+created_by_id  uuid                    YES       
+tenant_id      uuid                    NO        
+updated_by_id  uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: shuttle_controller_f_created_by_id_9498c9af_fk_users_use
+    updated_by_id -> users_users(id)
+        Constraint: shuttle_controller_f_updated_by_id_1b1a6808_fk_users_use
+    tenant_id -> main_tenant(id)
+        Constraint: shuttle_controller_file_tenant_id_b3bc76e9_fk_main_tenant_id
+
+Indexes:
+    shuttle_controller_file_created_by_id_9498c9af
+        Type: INDEX
+    shuttle_controller_file_pkey
+        Type: UNIQUE
+    shuttle_controller_file_tenant_id_b3bc76e9
+        Type: INDEX
+    shuttle_controller_file_updated_by_id_1b1a6808
+        Type: INDEX
+
+
+================================================================================
+Table: public.shuttle_relation
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column               Type                    Nullable  Default
+--------------------------------------------------------------
+id                   uuid                    NO         (PK)
+created_at           bigint                  YES       
+from_type            character varying(255)  NO        
+to_type              character varying(255)  NO        
+relation_type_group  character varying(255)  NO        
+relation_type        character varying(255)  NO        
+additional_info      jsonb                   YES       
+from_id_id           uuid                    NO        
+to_id_id             uuid                    NO        
+updated_at           bigint                  YES       
+updated_by_id        uuid                    YES       
+created_by_id        uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: shuttle_relation_created_by_id_05e8797d_fk_users_users_id
+    from_id_id -> main_device(id)
+        Constraint: shuttle_relation_from_id_id_a91f9d1c_fk_main_device_id
+    to_id_id -> main_device(id)
+        Constraint: shuttle_relation_to_id_id_b83a9c47_fk_main_device_id
+    updated_by_id -> users_users(id)
+        Constraint: shuttle_relation_updated_by_id_9933da1f_fk_users_users_id
+
+Indexes:
+    shuttle_relation_created_by_id_05e8797d
+        Type: INDEX
+    shuttle_relation_from_id_id_a91f9d1c
+        Type: INDEX
+    shuttle_relation_from_id_id_from_type_rel_aa3fbf60_uniq
+        Type: UNIQUE
+    shuttle_relation_pkey
+        Type: UNIQUE
+    shuttle_relation_to_id_id_b83a9c47
+        Type: INDEX
+    shuttle_relation_updated_by_id_9933da1f
+        Type: INDEX
+
+
+================================================================================
+Table: public.shuttle_rpc_message
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+id               bigint                    NO         (PK)
+created_at       timestamp with time zone  NO        
+received         boolean                   NO        
+additional_info  jsonb                     YES       
+
+Primary Key:
+    id
+
+Indexes:
+    shuttle_rpc_message_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.shuttle_ts_kv
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                      Nullable  Default
+------------------------------------------------------
+ts         timestamp with time zone  NO        
+key        integer                   NO        
+bool_v     boolean                   YES       
+str_v      text                      YES       
+long_v     bigint                    YES       
+dbl_v      double precision          YES       
+json_v     jsonb                     YES       
+entity_id  uuid                      NO        
+
+Indexes:
+    shuttle_ts_kv_entity_id_ts_idx
+        Type: INDEX
+    shuttle_ts_kv_key_ts_idx
+        Type: INDEX
+    shuttle_ts_kv_ts_idx
+        Type: INDEX
+
+
+================================================================================
+Table: public.shuttle_ts_kv_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                      Nullable  Default
+------------------------------------------------------
+id         uuid                      YES       
+ts         timestamp with time zone  YES       
+key        integer                   YES       
+bool_v     boolean                   YES       
+str_v      character varying(10000)  YES       
+long_v     bigint                    YES       
+dbl_v      double precision          YES       
+json_v     jsonb                     YES       
+entity_id  uuid                      YES       
+
+
+================================================================================
+Table: public.shuttle_ts_kv_dictionary
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column  Type                    Nullable  Default
+-------------------------------------------------
+key     character varying(255)  NO        
+key_id  integer                 NO         (PK)
+
+Primary Key:
+    key_id
+
+Indexes:
+    shuttle_ts_kv_dictionary_key_key_id_6c61c716_uniq
+        Type: UNIQUE
+    shuttle_ts_kv_dictionary_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.shuttle_ts_kv_latest
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column     Type                      Nullable  Default
+------------------------------------------------------
+id         uuid                      NO         (PK)
+ts         bigint                    YES       
+key        integer                   NO        
+bool_v     boolean                   YES       
+str_v      character varying(10000)  YES       
+long_v     bigint                    YES       
+dbl_v      double precision          YES       
+json_v     jsonb                     YES       
+entity_id  uuid                      NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    entity_id -> main_device(id)
+        Constraint: shuttle_ts_kv_latest_entity_id_ef79b033_fk_main_device_id
+    key -> shuttle_ts_kv_dictionary(key_id)
+        Constraint: shuttle_ts_kv_latest_key_4342f761_fk_shuttle_t
+
+Indexes:
+    shuttle_ts_kv_latest_entity_id_ef79b033
+        Type: INDEX
+    shuttle_ts_kv_latest_entity_id_key_e9acb40f_uniq
+        Type: UNIQUE
+    shuttle_ts_kv_latest_key_4342f761
+        Type: INDEX
+    shuttle_ts_kv_latest_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.socialaccount_socialaccount
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column       Type                      Nullable  Default
+--------------------------------------------------------
+id           integer                   NO         (PK)
+provider     character varying(200)    NO        
+uid          character varying(191)    NO        
+last_login   timestamp with time zone  NO        
+date_joined  timestamp with time zone  NO        
+extra_data   jsonb                     NO        
+user_id      uuid                      NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    user_id -> users_users(id)
+        Constraint: socialaccount_socialaccount_user_id_8146e70c_fk_users_users_id
+
+Indexes:
+    socialaccount_socialaccount_pkey
+        Type: UNIQUE
+    socialaccount_socialaccount_provider_uid_fc810c6e_uniq
+        Type: UNIQUE
+    socialaccount_socialaccount_user_id_8146e70c
+        Type: INDEX
+
+
+================================================================================
+Table: public.socialaccount_socialapp
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column       Type                    Nullable  Default
+------------------------------------------------------
+id           integer                 NO         (PK)
+provider     character varying(30)   NO        
+name         character varying(40)   NO        
+client_id    character varying(191)  NO        
+secret       character varying(191)  NO        
+key          character varying(191)  NO        
+provider_id  character varying(200)  NO        
+settings     jsonb                   NO        
+
+Primary Key:
+    id
+
+Indexes:
+    socialaccount_socialapp_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.socialaccount_socialapp_sites
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column        Type     Nullable  Default
+----------------------------------------
+id            integer  NO         (PK)
+socialapp_id  integer  NO        
+site_id       integer  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    site_id -> django_site(id)
+        Constraint: socialaccount_social_site_id_2579dee5_fk_django_si
+    socialapp_id -> socialaccount_socialapp(id)
+        Constraint: socialaccount_social_socialapp_id_97fb6e7d_fk_socialacc
+
+Indexes:
+    socialaccount_socialapp__socialapp_id_site_id_71a9a768_uniq
+        Type: UNIQUE
+    socialaccount_socialapp_sites_pkey
+        Type: UNIQUE
+    socialaccount_socialapp_sites_site_id_2579dee5
+        Type: INDEX
+    socialaccount_socialapp_sites_socialapp_id_97fb6e7d
+        Type: INDEX
+
+
+================================================================================
+Table: public.socialaccount_socialtoken
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column        Type                      Nullable  Default
+---------------------------------------------------------
+id            integer                   NO         (PK)
+token         text                      NO        
+token_secret  text                      NO        
+expires_at    timestamp with time zone  YES       
+account_id    integer                   NO        
+app_id        integer                   YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    account_id -> socialaccount_socialaccount(id)
+        Constraint: socialaccount_social_account_id_951f210e_fk_socialacc
+    app_id -> socialaccount_socialapp(id)
+        Constraint: socialaccount_social_app_id_636a42d7_fk_socialacc
+
+Indexes:
+    socialaccount_socialtoken_account_id_951f210e
+        Type: INDEX
+    socialaccount_socialtoken_app_id_636a42d7
+        Type: INDEX
+    socialaccount_socialtoken_app_id_account_id_fca4e0ac_uniq
+        Type: UNIQUE
+    socialaccount_socialtoken_pkey
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.users_reset_password
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type                   Nullable  Default
+-------------------------------------------------------
+id             uuid                   NO         (PK)
+created_at     bigint                 YES       
+key            character varying(40)  NO        
+expires_at     bigint                 NO        
+user_id        uuid                   NO        
+created_by_id  uuid                   YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: users_reset_password_created_by_id_67237e2f_fk_users_users_id
+    user_id -> users_users(id)
+        Constraint: users_reset_password_user_id_53d8b1f3_fk_users_users_id
+
+Indexes:
+    users_reset_password_created_by_id_67237e2f
+        Type: INDEX
+    users_reset_password_key_155cc47a_like
+        Type: INDEX
+    users_reset_password_key_key
+        Type: UNIQUE
+    users_reset_password_pkey
+        Type: UNIQUE
+    users_reset_password_user_id_53d8b1f3
+        Type: INDEX
+
+
+================================================================================
+Table: public.users_roles
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    NO         (PK)
+created_at       bigint                  YES       
+name             character varying(255)  NO        
+tenant_id        uuid                    NO        
+additional_info  jsonb                   YES       
+created_by_id    uuid                    YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    created_by_id -> users_users(id)
+        Constraint: users_roles_created_by_id_cef81cc1_fk_users_users_id
+    tenant_id -> main_tenant(id)
+        Constraint: users_roles_tenant_id_f699cea1_fk_main_tenant_id
+
+Indexes:
+    users_roles_created_by_id_cef81cc1
+        Type: INDEX
+    users_roles_name_tenant_id_1a037bef_uniq
+        Type: UNIQUE
+    users_roles_pkey
+        Type: UNIQUE
+    users_roles_tenant_id_f699cea1
+        Type: INDEX
+
+
+================================================================================
+Table: public.users_roles_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                    Nullable  Default
+----------------------------------------------------------
+id               uuid                    YES       
+created_at       bigint                  YES       
+name             character varying(255)  YES       
+tenant_id        uuid                    YES       
+additional_info  jsonb                   YES       
+
+
+================================================================================
+Table: public.users_roles_permissions
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             integer  NO         (PK)
+role_id        uuid     NO        
+permission_id  integer  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    permission_id -> auth_permission(id)
+        Constraint: users_roles_permissi_permission_id_71d3e54c_fk_auth_perm
+    role_id -> users_roles(id)
+        Constraint: users_roles_permissions_role_id_c5cc1d05_fk_users_roles_id
+
+Indexes:
+    users_roles_permissions_permission_id_71d3e54c
+        Type: INDEX
+    users_roles_permissions_pkey
+        Type: UNIQUE
+    users_roles_permissions_role_id_c5cc1d05
+        Type: INDEX
+    users_roles_permissions_role_id_permission_id_80846c81_uniq
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.users_roles_permissions_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             integer  YES       
+role_id        uuid     YES       
+permission_id  integer  YES       
+
+
+================================================================================
+Table: public.users_users
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column           Type                      Nullable  Default
+------------------------------------------------------------
+password         character varying(128)    NO        
+is_superuser     boolean                   NO        
+first_name       character varying(150)    NO        
+last_name        character varying(150)    NO        
+is_staff         boolean                   NO        
+is_active        boolean                   NO        
+id               uuid                      NO         (PK)
+email            character varying(254)    NO        
+additional_info  jsonb                     YES       
+phone            character varying(255)    YES       
+tenant_id        uuid                      YES       
+customer_id_id   uuid                      YES       
+date_joined      timestamp with time zone  YES       
+last_login       timestamp with time zone  YES       
+
+Primary Key:
+    id
+
+Foreign Keys:
+    customer_id_id -> main_customer(id)
+        Constraint: users_users_customer_id_id_eced3201_fk_main_customer_id
+    tenant_id -> main_tenant(id)
+        Constraint: users_users_tenant_id_03096788_fk_main_tenant_id
+
+Indexes:
+    unique_user_email_is_active
+        Type: UNIQUE
+    users_users_customer_id_id_eced3201
+        Type: INDEX
+    users_users_pkey
+        Type: UNIQUE
+    users_users_tenant_id_03096788
+        Type: INDEX
+
+
+================================================================================
+Table: public.users_users_groups
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column    Type     Nullable  Default
+------------------------------------
+id        integer  NO         (PK)
+user_id   uuid     NO        
+group_id  integer  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    group_id -> auth_group(id)
+        Constraint: users_users_groups_group_id_3e15ff0f_fk_auth_group_id
+    user_id -> users_users(id)
+        Constraint: users_users_groups_user_id_c98e5af9_fk_users_users_id
+
+Indexes:
+    users_users_groups_group_id_3e15ff0f
+        Type: INDEX
+    users_users_groups_pkey
+        Type: UNIQUE
+    users_users_groups_user_id_c98e5af9
+        Type: INDEX
+    users_users_groups_user_id_group_id_d19740ef_uniq
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.users_users_roles
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column   Type     Nullable  Default
+-----------------------------------
+id       integer  NO         (PK)
+user_id  uuid     NO        
+role_id  uuid     NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    role_id -> users_roles(id)
+        Constraint: users_users_roles_role_id_3f0d39fb_fk_users_roles_id
+    user_id -> users_users(id)
+        Constraint: users_users_roles_user_id_f0b3bab1_fk_users_users_id
+
+Indexes:
+    users_users_roles_pkey
+        Type: UNIQUE
+    users_users_roles_role_id_3f0d39fb
+        Type: INDEX
+    users_users_roles_user_id_f0b3bab1
+        Type: INDEX
+    users_users_roles_user_id_role_id_694c418f_uniq
+        Type: UNIQUE
+
+
+================================================================================
+Table: public.users_users_roles_backup
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column   Type     Nullable  Default
+-----------------------------------
+id       integer  YES       
+user_id  uuid     YES       
+role_id  uuid     YES       
+
+
+================================================================================
+Table: public.users_users_user_permissions
+================================================================================
+
+Columns:
+--------------------------------------------------------------------------------
+Column         Type     Nullable  Default
+-----------------------------------------
+id             integer  NO         (PK)
+user_id        uuid     NO        
+permission_id  integer  NO        
+
+Primary Key:
+    id
+
+Foreign Keys:
+    permission_id -> auth_permission(id)
+        Constraint: users_users_user_per_permission_id_9a117d64_fk_auth_perm
+    user_id -> users_users(id)
+        Constraint: users_users_user_permissions_user_id_f5917bbd_fk_users_users_id
+
+Indexes:
+    users_users_user_permiss_user_id_permission_id_a4babf38_uniq
+        Type: UNIQUE
+    users_users_user_permissions_permission_id_9a117d64
+        Type: INDEX
+    users_users_user_permissions_pkey
+        Type: UNIQUE
+    users_users_user_permissions_user_id_f5917bbd
+        Type: INDEX
+

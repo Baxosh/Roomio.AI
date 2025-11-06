@@ -1,0 +1,174 @@
+# ==========================================
+# Docker Ignore File for Vanna AI
+# ==========================================
+# This file prevents unnecessary files from being copied into the Docker image,
+# reducing image size and build time.
+
+# ==========================================
+# Python Generated Files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# ==========================================
+# Virtual Environments
+# ==========================================
+.venv/
+venv/
+ENV/
+env/
+.virtualenv/
+
+# ==========================================
+# IDE & Editor Files
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ==========================================
+# OS Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Git Files
+# ==========================================
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# ==========================================
+# Environment & Configuration Files
+# ==========================================
+.env
+.env.*
+!.env.example
+*.env
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# ==========================================
+# Database Files (Excluded from Image)
+# ==========================================
+# ChromaDB - will be mounted as volume
+chroma_db/
+*.sqlite3
+*.db
+
+# ==========================================
+# Test Files & Results
+# ==========================================
+result_*.log
+*_result.log
+test-results/
+*.test
+
+# ==========================================
+# Documentation (Keep Only Essential)
+# ==========================================
+*.md
+!README.md
+docs/
+DEPLOYMENT.md
+
+# ==========================================
+# Docker Files (Not Needed Inside Image)
+# ==========================================
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# ==========================================
+# Temporary & Cache Directories
+# ==========================================
+# General temp
+tmp/
+temp/
+*.tmp
+
+# ==========================================
+# Development Scripts (Optional)
+# ==========================================
+main.py
+extract_schema.py
+index.html
+vanna-components.js
+
+# ==========================================
+# CI/CD Files
+# ==========================================
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+azure-pipelines.yml
+Jenkinsfile
+
+# ==========================================
+# Additional Python Files
+# ==========================================
+*.pyc
+*.pyo
+*.pyd
