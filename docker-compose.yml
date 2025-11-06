@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   vanna-app:
@@ -25,6 +25,11 @@ services:
       # Optional: Additional configuration
       - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.7}
       - AGENT_MAX_ITERATIONS=${AGENT_MAX_ITERATIONS:-50}
+
+      # Domain/SSL
+      - VIRTUAL_HOST=${VIRTUAL_HOST:-api.domain.com}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-api.domain.com}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-grms@room.io}
     volumes:
       # Mount logs directory for persistence
       - ./logs:/app/logs
@@ -35,8 +40,15 @@ services:
     restart: unless-stopped
     networks:
       - vanna-network
+      - roomio_net
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5)"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8000/health', timeout=5)",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -48,3 +60,5 @@ services:
 networks:
   vanna-network:
     driver: bridge
+  roomio_net:
+    external: true
