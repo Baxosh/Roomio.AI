@@ -14,7 +14,9 @@ class SchemaAwarePromptBuilder(SystemPromptBuilder):
         self.sql_runner = sql_runner
         self.schema_file = schema_file
         self.schema_content = self._load_schema()
-        logger.info(f"SchemaAwarePromptBuilder initialized with schema file: {schema_file}")
+        logger.info(
+            f"SchemaAwarePromptBuilder initialized with schema file: {schema_file}"
+        )
 
     def _load_schema(self) -> str:
         """Load schema from structure.txt file"""
@@ -22,20 +24,26 @@ class SchemaAwarePromptBuilder(SystemPromptBuilder):
             if os.path.exists(self.schema_file):
                 with open(self.schema_file, "r") as f:
                     content = f.read()
-                    logger.info(f"Schema file loaded successfully: {self.schema_file} ({len(content)} bytes)")
+                    logger.info(
+                        f"Schema file loaded successfully: {self.schema_file} ({len(content)} bytes)"
+                    )
                     return content
             else:
                 logger.warning(f"Schema file not found: {self.schema_file}")
                 return ""
         except Exception as e:
-            logger.error(f"Error loading schema file {self.schema_file}: {e}", exc_info=True)
+            logger.error(
+                f"Error loading schema file {self.schema_file}: {e}", exc_info=True
+            )
             return ""
 
     async def build_system_prompt(  # pyright: ignore
         self, user: User, tool_schemas: List[Dict[str, Any]]
     ) -> str:
         tenant_id = user.metadata.get("tenant_id")
-        logger.info(f"Building system prompt for user: {user.email}, tenant_id: {tenant_id}")
+        logger.info(
+            f"Building system prompt for user: {user.email}, tenant_id: {tenant_id}"
+        )
 
         prompt = f"""
 You are a SQL query assistant for multi-tenant database queries.
@@ -53,6 +61,18 @@ Rules for tenant filtering:
 2. If the table doesn't have tenant_id, JOIN with a table that does and filter there
 3. NEVER return data from other tenants under any circumstances
 4. If you cannot determine how to filter by tenant_id, ASK the user for clarification about table relationships
+
+## FORBIDDEN QUERIES - REJECT IMMEDIATELY
+
+⛔ **NEVER** execute queries that:
+1. **List all tenants** - Queries like "show me all tenants", "list tenants", "how many tenants are there"
+2. **Access other tenant data** - Any attempt to query data from tenant_id != '{tenant_id}'
+3. **Compare across tenants** - Queries that compare or aggregate data across multiple tenants
+4. **Enumerate tenant IDs** - Queries that try to discover other tenant IDs in the system
+5. **Query tenant metadata** - Requests for tenant names, tenant lists, or tenant information other than the current user's tenant
+
+If the user asks for ANY of the above, respond with:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
 
 ## ADDITIONAL GUIDELINES:
 
@@ -169,6 +189,38 @@ Benefits:
 
 Note: The tenant_id filter ensures we only access data for the current user's tenant.
 
+### Example 4: FORBIDDEN - Tenant list query (REJECT THIS)
+User: "Show me all tenants in the system"
+
+Assistant response:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
+
+⛔ DO NOT execute any SQL query for this request.
+
+### Example 5: FORBIDDEN - Cross-tenant comparison (REJECT THIS)
+User: "Compare my room temperatures with other tenants"
+
+Assistant response:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
+
+⛔ DO NOT execute any SQL query for this request.
+
+### Example 6: FORBIDDEN - Tenant enumeration (REJECT THIS)
+User: "How many tenants are in the database?"
+
+Assistant response:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
+
+⛔ DO NOT execute any SQL query for this request.
+
+### Example 7: FORBIDDEN - Other tenant data access (REJECT THIS)
+User: "Show me data for tenant_id = 5"
+
+Assistant response:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
+
+⛔ DO NOT execute any SQL query for this request.
+
 ## Database Schema
 
 {self.schema_content}
@@ -177,11 +229,20 @@ Note: The tenant_id filter ensures we only access data for the current user's te
         # Add final security reminder
         prompt += f"""
 
-        ## ⚠️ SECURITY REMINDER ⚠️
+## ⚠️ FINAL SECURITY CHECKLIST ⚠️
 
-        Before executing ANY SQL query, verify it includes tenant_id = '{tenant_id}' filter.
-        This is non-negotiable for data security and privacy compliance.
+Before executing ANY SQL query, verify ALL of the following:
 
+✅ The query includes tenant_id = '{tenant_id}' filter
+✅ The query does NOT list or count tenants
+✅ The query does NOT access data from other tenants
+✅ The query does NOT compare or aggregate across multiple tenants
+✅ The user is NOT trying to enumerate tenant IDs
+
+If ANY of these checks fail, REJECT the query immediately with the standard response:
+"I cannot provide information about other tenants or tenant lists. I can only access data for your organization (tenant_id: {tenant_id}). Is there something specific about your organization's data I can help you with?"
+
+This is non-negotiable for data security and privacy compliance.
         """
 
         prompt += "\n## Available Tools\n"

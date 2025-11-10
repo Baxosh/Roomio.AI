@@ -60,7 +60,9 @@ class SimpleUserResolver(UserResolver):
                         if is_active:
                             groups.append("user")
 
-                        logger.info(f"User resolved successfully: {email}, groups: {groups}, tenant_id: {tenant_id}")
+                        logger.info(
+                            f"User resolved successfully: {email}, groups: {groups}, tenant_id: {tenant_id}"
+                        )
 
                         return User(
                             id=user_id,

@@ -23,6 +23,12 @@ logs/
 *.sqlite3
 chroma_db/
 
+# Vanna AI user-specific query results
+# These are created per-user by LocalFileSystem for query result isolation
+query_results/
+# Legacy UUID folders in root directory (if any remain)
+[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]/
+
 # IDE
 .vscode/
 .idea/
@@ -36,3 +42,5 @@ chroma_db/
 result_*.log
 *_result.log
 
+# Claude code
+.claude

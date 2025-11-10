@@ -1,15 +1,35 @@
+"""Logging configuration for Vanna AI application."""
+
 import logging
 import os
 import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from typing import Final, Optional
+
+# Constants
+LOGGER_NAME: Final[str] = "vanna_app"
+DEFAULT_LOG_LEVEL: Final[str] = "INFO"
+DEFAULT_LOG_FILE: Final[str] = "logs/vanna_app.log"
+MB_TO_BYTES: Final[int] = 1024 * 1024
+DEFAULT_MAX_BYTES: Final[int] = 10 * MB_TO_BYTES  # 10MB
+DEFAULT_BACKUP_COUNT: Final[int] = 5
+
+# Log format templates
+DETAILED_FORMAT: Final[str] = (
+    "%(asctime)s - %(name)s - %(levelname)s - "
+    "[%(filename)s:%(lineno)d] - %(message)s"
+)
+CONSOLE_FORMAT: Final[str] = "%(asctime)s - %(levelname)s - %(message)s"
+DETAILED_DATE_FORMAT: Final[str] = "%Y-%m-%d %H:%M:%S"
+CONSOLE_DATE_FORMAT: Final[str] = "%H:%M:%S"
 
 
 def setup_logging(
-    log_level: str = None,
-    log_file: str = "logs/vanna_app.log",
-    max_bytes: int = 10485760,  # 10MB
-    backup_count: int = 5,
+    log_level: Optional[str] = None,
+    log_file: str = DEFAULT_LOG_FILE,
+    max_bytes: int = DEFAULT_MAX_BYTES,
+    backup_count: int = DEFAULT_BACKUP_COUNT,
 ) -> logging.Logger:
     """
     Configure application-wide logging with both file and console handlers.
@@ -24,14 +44,14 @@ def setup_logging(
         Configured logger instance
     """
     # Get log level from environment or use provided value or default to INFO
-    log_level = log_level or os.getenv("LOG_LEVEL", "INFO").upper()
+    log_level = log_level or os.getenv("LOG_LEVEL", DEFAULT_LOG_LEVEL).upper()
 
     # Create logs directory if it doesn't exist
     log_dir = Path(log_file).parent
     log_dir.mkdir(exist_ok=True)
 
     # Create logger
-    logger = logging.getLogger("vanna_app")
+    logger = logging.getLogger(LOGGER_NAME)
     logger.setLevel(getattr(logging, log_level))
 
     # Clear any existing handlers
@@ -39,13 +59,13 @@ def setup_logging(
 
     # Create formatters
     detailed_formatter = logging.Formatter(
-        fmt="%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
+        fmt=DETAILED_FORMAT,
+        datefmt=DETAILED_DATE_FORMAT,
     )
 
     console_formatter = logging.Formatter(
-        fmt="%(asctime)s - %(levelname)s - %(message)s",
-        datefmt="%H:%M:%S",
+        fmt=CONSOLE_FORMAT,
+        datefmt=CONSOLE_DATE_FORMAT,
     )
 
     # File handler with rotation
@@ -70,21 +90,23 @@ def setup_logging(
     return logger
 
 
-def get_logger(name: str = None) -> logging.Logger:
+def get_logger(name: Optional[str] = None) -> logging.Logger:
     """
     Get a logger instance. If the main logger hasn't been configured,
     this will configure it with default settings.
 
     Args:
-        name: Optional name for the logger (defaults to 'vanna_app')
+        name: Optional name for the logger. If provided, creates hierarchical
+              logger (e.g., 'vanna_app.config'). Defaults to root logger.
 
     Returns:
         Logger instance
     """
     if name:
-        return logging.getLogger(name)
+        # Create hierarchical logger for better organization
+        return logging.getLogger(f"{LOGGER_NAME}.{name}")
 
-    logger = logging.getLogger("vanna_app")
+    logger = logging.getLogger(LOGGER_NAME)
 
     # If logger hasn't been configured yet, configure it with defaults
     if not logger.handlers:
